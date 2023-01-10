@@ -10,7 +10,6 @@ class Solution:
                 else:
                     player2 += nums[lp]
 
-                print(player1, player2)
                 return player1 >= player2
             
             if move_A:
