@@ -38,8 +38,3 @@ class Solution:
 res = Solution().minJumps(forbidden = [8,3,16,6,12,20], a = 15, b = 13, x = 11)
 res = Solution().minJumps(forbidden = [14,4,18,1,15], a = 3, b = 15, x = 9)
 print(res)
-
-
-
-        
-        

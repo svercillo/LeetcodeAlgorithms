@@ -7,9 +7,8 @@ class Solution:
     
         def count(counting_char):
             nonlocal s
-
             total = 0 
-            count = 0x
+            count = 0
             oppcount = 0
             for i in range(n):
                 if s[i] == counting_char:
@@ -27,7 +26,5 @@ class Solution:
                 
             return total
                     
-            
-                    
-                    
+                            
         return count("0") + count("1")
