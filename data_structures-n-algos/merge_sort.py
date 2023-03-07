@@ -1,43 +1,41 @@
-def mergesort(arr):
-    def merge(arr1, arr2):
-        p1, p2, n, m = 0, 0, len(arr1), len(arr2)
-        res = []
-        while p1 < n and p2 < m:
-            if arr1[p1] <= arr2[p2]:
-                res.append(arr1[p1])
-                p1 +=1
-            else:
-                res.append(arr2[p2])
-                p2 +=1 
-
-
-        while p1 < n:
-            res.append(arr1[p1])
-            p1 +=1
-
-        while p2 < m:
-            res.append(arr2[p2])
-            p2 += 1
-
-        return res
+def merge_sort(arr):
+    n = len(arr)
     
-    n = len(arr)    
-    
-    l, r = 0, n
-
-    if n <= 1:
+    if len(arr) in [0, 1]:
         return arr
+    
 
-    m = (l + r) //2
+    larr = merge_sort(arr[:n//2])
+    rarr = merge_sort(arr[n//2:])
 
-    larr = mergesort(arr[:m])
-    rarr = mergesort(arr[m:]) 
 
-    return merge(larr, rarr)
+    
+    
+    res = []
+    lp, rp = 0, 0
+    while lp < len(larr):
+
+        while rp < len(rarr) and rarr[rp] < larr[lp]:
+            res.append(rarr[rp])
+            rp += 1
+
+        res.append(larr[lp])
+        lp += 1
+
+    while lp < len(larr):
+        res.append(larr[lp])
+        lp += 1 
+
+
+    while rp < len(rarr):
+        res.append(rarr[rp])
+        rp += 1
+
+    return res
 
 
 arr = [5,1,1,2,0,0]
 
-res = mergesort(arr)
+res = merge_sort(arr)
 
 print(res)

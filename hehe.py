@@ -1,27 +1,72 @@
+def get_largest_element_smaller_than_x(arr, x):
+    n = len(arr)
+    lp, rp = 0, n - 1
 
-# You are opening a small pizzeria. 
-# In fact, your pizzeria is so small that you decided to offer only one type of pizza. 
-# Now you need to decide what ingredients to include (peppers? tomatoes? both?).
-# Everyone has their own pizza preferences. 
-# Each of your potential clients has some ingredients they like, and maybe some ingredients they dislike. 
-# Each client will come to your pizzeria if both conditions are true:
+    while lp <= rp: 
+        m = (lp+rp) // 2
 
-# all the ingredients they like are on the pizza, and
-# none of the ingredients they dislike are on the pizza
+        if arr[m] < x:
+            lp = m + 1
+        else:
+            rp = m - 1
+    
+    def check_index(ind):
+        if arr[ind] < x and (ind + 1 == len(arr) or  arr[ind + 1] >= x):
+            return True
+    
+    if lp == n:
+        lp -= 1
+    
+    if check_index(lp): return lp
+    if check_index(lp + 1): return lp + 1
+    if check_index(lp - 1): return lp -1
 
-# Each client is OK with additional ingredients they neither like or dislike being present on the pizza. Your task is to choose which ingredients to put on your only pizza type, to maximize the number of clients that will visit your pizzeria.
-
-# Input
-# The first line contains one integer 1≤C≤105 - the number of potential clients.
-# The following 2×C lines describe the clients’ preferences in the following format:
-# First line contains integer 1≤L≤5, followed by L names of ingredients a client likes, delimited by spaces.
-# Second line contains integer 0≤D≤5, followed by D names of ingredients a client dislikes, delimited by spaces.
-# Each ingredient name consists of between 1 and 15 ASCII characters. Each character is one of the lowercase letters (a-z) or a digit (0-9).
-
-
-def solution(text):
-    num_clients = int(text.split()[0])
-    for string in text.split()[1:]:
+    return -1
 
 
-        
+
+arr = [1,1,1,1,1,1]
+res = get_largest_element_smaller_than_x(arr, float(input()))
+
+print(res)
+print(arr[res])
+
+
+    
+# def test_get_closest_smaller_element():
+#     # Test case 1
+#     arr = [1, 3, 4, 6, 8]
+#     x = 5
+#     assert get_closest_smaller_element(arr, x) == 2
+
+#     # Test case 2
+#     arr = [1, 3, 4, 6, 8]
+#     x = 0
+#     assert get_closest_smaller_element(arr, x) == -1
+
+#     # Test case 3
+#     arr = [1, 3, 4, 6, 8]
+#     x = 10
+#     print(get_closest_smaller_element(arr, x))
+#     assert get_closest_smaller_element(arr, x) == 4
+
+#     # Test case 4
+#     arr = [1, 1, 1, 1, 1]
+#     x = 1
+#     assert get_closest_smaller_element(arr, x) == -1
+
+#     # Test case 5
+#     arr = [1, 3, 5, 7, 9]
+#     x = 3
+#     assert get_closest_smaller_element(arr, x) == 0
+
+#     # Test case 6
+#     arr = [1, 3, 5, 7, 9]
+#     x = 2
+#     assert get_closest_smaller_element(arr, x) == 0
+
+
+
+
+
+# test_get_closest_smaller_element()

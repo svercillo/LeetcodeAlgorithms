@@ -13,6 +13,8 @@ nums = [0, 2, 3, 3]
 # print(nums)
 
 
+
+
 def binary_search(array, target):
     if len(array) == 0:
         return -1, False
@@ -43,8 +45,50 @@ def binary_search(array, target):
     return l
 
 
-res = binary_search([-1, 0, 3, 5, 9, 12], 3)
-print(res)
+
+# def binary_search(array, target):
+#     n = len(array)
+
+#     l, r = 0, n-1 
+
+#     while l <= r: 
+#         m = (l + r) // 2
+        
+
+#         if array[m] == target:
+#             return m
+        
+#         elif array[m] > target:
+#             r = m - 1
+#         else:
+#             l = m + 1
+
+
+    
+#     while l >= 0 and array[l] > target:
+#         l -=1
+
+#     return l
+
+
+arr = [-1, 0, 3, 5, 9, 10]
+ind = binary_search(arr, -2)
+
+
+print(ind)
+
+
+
+
+
+
+
+
+# print(ind, arr[ind])
+
+
+
+
 
 
 def rev_binary_search(array, target):
