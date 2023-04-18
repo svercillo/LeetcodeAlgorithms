@@ -1,98 +1,50 @@
 class Solution:
-    def isOneEditDistance(self, s_str: str, t_str: str) -> bool:
+    def isOneEditDistance(self, s: str, t: str) -> bool:
 
-        if s_str == "" and len(t_str) == 1 or t_str == "" and len(s_str) == 1:
-            return True
+        m = len(s)
+        n = len(t)
 
-        s = []
-        for c in s_str:
-            s.append(c)
+        if m > n:
+            temp = s
+            s = t
+            t = temp
 
-        t = []
-        for c in t_str:
-            t.append(c)
+        m = len(s)
+        n = len(t)
+        
+        def num_edit_dists(sind, tind, num_edits)->bool:
 
-        def compare_strings(s, t, sp, tp, edit_availible):
+            if num_edits > 1:
+                return num_edits
 
-            while sp < len(s) and tp < len(t):
+            if sind == m:
+                return n - tind + num_edits
 
-                if s[sp] != t[tp]:
-                    if not edit_availible:
-                        return False
+            if tind == n:
+                return m - sind + num_edits
+ 
 
-                    new_s = s.copy()
-                    new_t = t.copy()
+            while sind < m and tind < n:
 
-                    condition = False
-
-                    # skip character
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp + 1, tp, False
+                if s[sind] == t[tind]:
+                    sind += 1
+                    tind += 1
+                else:
+                    return min(
+                        num_edit_dists(sind +1, tind +1, num_edits +1),
+                        num_edit_dists(sind, tind+1 , num_edits + 1)
                     )
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp + 1, False
-                    )
+            
+            if sind == m and tind < n:
+                return num_edits + n- tind
 
-                    # change character
-                    new_s[sp] = new_t[tp]
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp, False
-                    )
+            elif sind < m and tind == n:
+                return num_edits + m - sind
+                
 
-                    new_s[sp] = s[sp]
-                    new_t[tp] = new_s[sp]
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp, False
-                    )
+            return num_edits
 
-                    # insert character
-                    new_t[tp] = t[tp]
-                    new_t = new_t[:tp] + [new_s[sp]] + new_t[tp:]
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp, False
-                    )
+        sind, tind = 0,0
 
-                    new_t = new_t[:tp] + new_t[tp + 1 :]
-                    new_s = new_s[:sp] + [new_t[tp]] + new_s[sp:]
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp, False
-                    )
-
-                    if condition:
-                        return True
-
-                sp += 1
-                tp += 1
-
-            if edit_availible:
-                if len(s) != len(t):
-
-                    if len(s) > len(t):
-                        temp = s
-                        s = t
-                        t = temp
-
-                    new_s = s.copy()
-                    new_t = t.copy()
-
-                    # insert character
-                    new_s = new_s + [new_t[tp]]
-
-                    condition = False
-                    condition = condition or compare_strings(
-                        new_s, new_t, sp, tp, False
-                    )
-
-                    if condition:
-                        return True
-
-                return True
-            else:
-                return False
-
-        return compare_strings(s, t, 0, 0, True)
-
-
-res = Solution().isOneEditDistance("", "")
-
-print(res)
+        return num_edit_dists(sind, tind, 0) == 1
+        

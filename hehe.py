@@ -1,72 +1,65 @@
-def get_largest_element_smaller_than_x(arr, x):
-    n = len(arr)
-    lp, rp = 0, n - 1
+from pprint import pprint
+class Solution:
+    def sumSubarrayMins(self, arr) -> int:
 
-    while lp <= rp: 
-        m = (lp+rp) // 2
+        global_sum = 0
+        class Number:
+            start = 0
+            end = 0
+            val = 0
+            def __init__(self, index, val):
+                self.index = index
+                self.val = val
 
-        if arr[m] < x:
-            lp = m + 1
-        else:
-            rp = m - 1
-    
-    def check_index(ind):
-        if arr[ind] < x and (ind + 1 == len(arr) or  arr[ind + 1] >= x):
-            return True
-    
-    if lp == n:
-        lp -= 1
-    
-    if check_index(lp): return lp
-    if check_index(lp + 1): return lp + 1
-    if check_index(lp - 1): return lp -1
+            
+            def __repr__(self):
+                return f"Num<val: {self.val}, start: {self.start}, index: {self.index},  end: {self.end}>"
+        
+        nodes = {}
+        stack = []
 
-    return -1
+        for i, e in enumerate(arr):
+            while len(stack) and e <= stack[-1].val:
+                top = stack.pop()
+                if len(stack) > 0:
+                    top.start = stack[-1].index + 1 # element is less than e
+                else:
+                    top.start = 0
+                top.end = i
+
+            number = Number(i, e)
+            stack.append(number)
+            nodes[number.val] = number
+
+
+        while len(stack):
+            top = stack.pop()
+            if len(stack):
+                top.start = stack[-1].index + 1 # element is less than e
+            else:
+                top.start = 0
+            top.end = len(arr)
+
+        pprint(nodes)
+        total_sum = 0
+        for k in nodes:
+            if nodes[k].index == 0:
+                added = k * (nodes[k].end - nodes[k].index)
+            elif nodes[k].index == len(arr) -1 :     
+                added = k * (nodes[k].index - nodes[k].start + 1)
+            else:
+                added = k * (nodes[k].index - nodes[k].start + 1) * (nodes[k].end - nodes[k].index)
+
+
+            total_sum += added
 
 
 
-arr = [1,1,1,1,1,1]
-res = get_largest_element_smaller_than_x(arr, float(input()))
+        return total_sum
+
+# res = Solution().sumSubarrayMins([3,1,2,4])
+# res = Solution().sumSubarrayMins([11,81,94,43,3])
+# res = Solution().sumSubarrayMins([1,2,5,4,3])
+res = Solution().sumSubarrayMins([1,2,3,2, 1])
 
 print(res)
-print(arr[res])
-
-
-    
-# def test_get_closest_smaller_element():
-#     # Test case 1
-#     arr = [1, 3, 4, 6, 8]
-#     x = 5
-#     assert get_closest_smaller_element(arr, x) == 2
-
-#     # Test case 2
-#     arr = [1, 3, 4, 6, 8]
-#     x = 0
-#     assert get_closest_smaller_element(arr, x) == -1
-
-#     # Test case 3
-#     arr = [1, 3, 4, 6, 8]
-#     x = 10
-#     print(get_closest_smaller_element(arr, x))
-#     assert get_closest_smaller_element(arr, x) == 4
-
-#     # Test case 4
-#     arr = [1, 1, 1, 1, 1]
-#     x = 1
-#     assert get_closest_smaller_element(arr, x) == -1
-
-#     # Test case 5
-#     arr = [1, 3, 5, 7, 9]
-#     x = 3
-#     assert get_closest_smaller_element(arr, x) == 0
-
-#     # Test case 6
-#     arr = [1, 3, 5, 7, 9]
-#     x = 2
-#     assert get_closest_smaller_element(arr, x) == 0
-
-
-
-
-
-# test_get_closest_smaller_element()

@@ -13,7 +13,7 @@ class Solution:
         def dfs(node):
             nonlocal p, q, lca
             
-            if not node:
+            if not node or lca is not None:
                 return False, False
 
             containsp = False
