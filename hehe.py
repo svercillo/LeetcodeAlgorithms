@@ -1,65 +1,38 @@
-from pprint import pprint
-class Solution:
-    def sumSubarrayMins(self, arr) -> int:
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
 
-        global_sum = 0
-        class Number:
-            start = 0
-            end = 0
-            val = 0
-            def __init__(self, index, val):
-                self.index = index
-                self.val = val
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+
+        node = head
+        dup_mapping = {} # mem address of node to mem address of duplicate node
+        
+        while node is not None:
+            dup_mapping[id(node)] = Node(node.val)
+            node = node.next
+
+        node = head
+        while node is not None:
+            
+            duplicate = dup_mapping[id(node)]
+
+
+            if node.next is not None:
+                duplicate.next = dup_mapping[id(node.next)]
+
+            if node.random is not None:
+                duplicate.random = dup_mapping[id(node.random)]
+
+            node = node.next
+
+        return dup_mapping[id(head)]
+
 
             
-            def __repr__(self):
-                return f"Num<val: {self.val}, start: {self.start}, index: {self.index},  end: {self.end}>"
-        
-        nodes = {}
-        stack = []
 
-        for i, e in enumerate(arr):
-            while len(stack) and e <= stack[-1].val:
-                top = stack.pop()
-                if len(stack) > 0:
-                    top.start = stack[-1].index + 1 # element is less than e
-                else:
-                    top.start = 0
-                top.end = i
-
-            number = Number(i, e)
-            stack.append(number)
-            nodes[number.val] = number
-
-
-        while len(stack):
-            top = stack.pop()
-            if len(stack):
-                top.start = stack[-1].index + 1 # element is less than e
-            else:
-                top.start = 0
-            top.end = len(arr)
-
-        pprint(nodes)
-        total_sum = 0
-        for k in nodes:
-            if nodes[k].index == 0:
-                added = k * (nodes[k].end - nodes[k].index)
-            elif nodes[k].index == len(arr) -1 :     
-                added = k * (nodes[k].index - nodes[k].start + 1)
-            else:
-                added = k * (nodes[k].index - nodes[k].start + 1) * (nodes[k].end - nodes[k].index)
-
-
-            total_sum += added
-
-
-
-        return total_sum
-
-# res = Solution().sumSubarrayMins([3,1,2,4])
-# res = Solution().sumSubarrayMins([11,81,94,43,3])
-# res = Solution().sumSubarrayMins([1,2,5,4,3])
-res = Solution().sumSubarrayMins([1,2,3,2, 1])
-
-print(res)

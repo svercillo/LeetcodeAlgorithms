@@ -52,7 +52,6 @@ class Solution:
                 chars = info[uf.find(i)]
                 chars.add((s[i], i))
         
-#         pprint(info)
     
         carr = [c for c in s]
 

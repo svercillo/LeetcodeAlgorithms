@@ -8,8 +8,7 @@ def binary_search(array, target):
         
         m = (l+r)//2
         
-        # if array[m] == target:
-        #     return m
+
         if array[m] > target:
             r = m
         else:
