@@ -7,6 +7,7 @@ class H2O {
     Semaphore oxy_start = new Semaphore(1);
     Semaphore oxy_ready = new Semaphore(1);
     Semaphore second_h_signal = new Semaphore(1);
+    Semaphore oxy_sent = new Semaphore(1);
 
 
     Semaphore hydro_released = new Semaphore(1);
@@ -19,6 +20,7 @@ class H2O {
             oxy_ready.acquire();
             oxy_start.acquire();
             hydro_released.acquire();
+            oxy_sent.acquire();
         } catch (Exception ex){
         }
 
@@ -49,6 +51,9 @@ class H2O {
                 synchronized(num_h){
                     num_h = 0; // reset hydrogen counter
                 }
+
+
+                oxy_sent.acquire();
         
                 hydro_released.release(); // signal to other hyd thread that it can exit safely 
             } else {
@@ -62,8 +67,10 @@ class H2O {
 
     public void oxygen(Runnable releaseOxygen) throws InterruptedException {
         oxy_start.acquire(); // wait for both hydrogens to be done
-        oxy_ready.release(); // signal that oxygen is ready to send
-        
+        oxy_ready.release(); // signal that oxygen is ready to send        
         releaseOxygen.run();
+        oxy_sent.release();
+
+        
     }
 }
