@@ -1,0 +1,40 @@
+class Solution:
+
+    def binary_search(self, nums, target):
+        n = len(nums)
+        l,r = 0, n -1
+        while l <= r:
+            m = (l+r) // 2
+            
+            if nums[m] == target:
+                return m + 1
+            elif nums[m] < target: 
+                l = m + 1
+            else: 
+                r = m -1
+        return l if l < n else n
+        
+    def isArraySpecial(self, nums: List[int], queries: List[List[int]]) -> List[bool]:
+        nq = len(queries)
+        i  =0 
+        n = len(nums)
+
+        pattern_start = [0]
+        while i < n-1: 
+            end = i
+            while end < n -1 and nums[end] % 2 != nums[end+1] %2:
+                end += 1
+            
+            i = end + 1
+        
+            pattern_start.append(end+ 1)
+
+    
+        answers = []
+        for start, end in queries:
+            first_ind = self.binary_search(pattern_start, start)
+            last_ind = self.binary_search(pattern_start, end)
+        
+
+            answers.append(first_ind == last_ind)
+        return answers
