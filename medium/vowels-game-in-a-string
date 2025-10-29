@@ -1,0 +1,13 @@
+class Solution:
+    def doesAliceWin(self, s: str) -> bool:
+        nvowels = 0
+
+        for c in s:
+            if c in "aeiuo":
+                nvowels += 1
+
+        
+        if nvowels ==0:
+            return False
+        else:
+            return True
