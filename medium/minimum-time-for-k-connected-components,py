@@ -1,0 +1,50 @@
+class Solution:
+    def minTime(self, n: int, edges: List[List[int]], k: int) -> int:
+        
+        edges.sort(key = lambda k : k[2], reverse = True)        
+        pmapping = [i for i in range(n)]
+        sizes = [1] * n
+
+        def getparent(node):
+            while node != pmapping[node]: 
+                node = pmapping[node]
+            return node
+
+        def combine(a, b):
+            parenta = getparent(a)
+            parentb = getparent(b)
+
+            if parenta == parentb:
+                return False
+
+            if sizes[parenta] >= sizes[parentb]:
+                pmapping[parentb] = parenta
+                sizes[parenta] += sizes[parentb] 
+            else:
+                pmapping[parenta] = parentb
+                sizes[parentb] += sizes[parenta]
+
+            return True
+
+        nconnected = n
+        mintime = math.inf
+        lasttime = math.inf
+        for a,b, time in edges:
+            
+            if combine(a, b):
+                nconnected -= 1
+
+            if nconnected < k:
+                return time
+
+
+            lasttime = time
+                    
+
+        return 0
+
+
+
+
+
+        
