@@ -1,68 +1,51 @@
 class Solution:
     def longestCycle(self, edges: List[int]) -> int:
         n = len(edges)
-        graph = {}
-        reverse_graph = {}
-        for i, outgoing in enumerate(edges):
-            if i not in graph:
-                graph[i] = set()
-
-            if outgoing != -1:
-                graph[i].add(outgoing)
-
-
-            if outgoing not in reverse_graph:
-                reverse_graph[outgoing] = set()
-
-            if outgoing != -1:
-                reverse_graph[outgoing].add(outgoing)
-
-
-        path = {}
-        longest_cycle_len = -1
-
-
-        print(graph)
-        print(reverse_graph)
-        starting_nodes = []
-
-        for i in range(n):
-            if i not in reverse_graph or len(reverse_graph) == 0:
-                starting_nodes.append(i)
-
-
-
-        visited = set()
-        # @cache
-        def dfs(node, depth):
-            nonlocal longest_cycle_len
-
-            
-            if node in path:
-                cycle_len = depth - path[node]
-                longest_cycle_len = max(cycle_len, longest_cycle_len)
-                return
-
-            
-            if node in visited:
-                return
-            
-            visited.add(node)
-
-
-            path[node] = depth
-            for v in graph[node]:
-                dfs(v, depth + 1)
-
-            path.pop(node)
-
-
-        # for i in starting_nodes:
-        #     dfs(i, 0)
-        for i in range(n):
-            dfs(i, 0)
-
-
-        return longest_cycle_len
         
+        graph = []
+        for _ in range(n):
+            graph.append(set())
+    
+        for a, b in enumerate(edges):
+            if a != b: 
+                graph[a].add(b)
+            else:
+                graph[a] = set()
+
+        @cache
+        def maxCycleLen(node): 
+            nonlocal count
+
+            # print(node, seen)
+            if node in seen:
+                # print("HERE", count)
+                return count - seen[node]
+            
+            seen[node] = count
+            count += 1
+            mlength = -1
+            # print(node)
+            for neigh in graph[node]:
+                if neigh == -1:
+                    continue
+                size = maxCycleLen(neigh)
+                mlength = max(mlength, size)
+            count -= 1
+            seen.pop(node)
+
+            return mlength 
+
+
+        # print("N", n, graph)
+        mlength = -1
+        for node in range(n):
+            # print("nod ", node)
+            seen = {} # node and the iteration it was inserted at
+            count = 0
+            mlength = max(mlength, maxCycleLen(node))
+
+        return mlength
+        
+
+
 
